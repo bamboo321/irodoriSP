@@ -1,11 +1,13 @@
 import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
 import time
 from getpass import getpass
 import os
 
 driver = webdriver.Chrome()
 driver.get('https://maeshima-ami.jp/group/8311')
+
+#time.sleep(3)
 
 userID = input('userID: ')
 userPasswd = getpass('userPasswd: ')
