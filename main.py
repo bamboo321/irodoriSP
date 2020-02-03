@@ -1,13 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
 import time
 from getpass import getpass
+import os
 
 driver = webdriver.Chrome()
 driver.get('https://maeshima-ami.jp/group/8311')
-
-time.sleep(3)
 
 userID = input('userID: ')
 userPasswd = getpass('userPasswd: ')
@@ -23,8 +21,13 @@ loginButton.click()
 
 time.sleep(4)
 imgList = driver.find_elements_by_class_name('img-protect')
-print(len(imgList))
 
-for i in imgList:
-    source = i.find_element_by_tag_name('data-original')
-    print(source)
+#保存用ディレクトリ作成, 存在していた場合はエラー
+#os.mkdir('amitaImgDir')
+
+for listNum, img in enumerate(imgList):
+    imgURL = img.get_attribute('data-original')
+    response = requests.get(imgURL)
+
+    with open('amitaImgDir/amita' + str(listNum) + '.png', 'wb') as imgBin:
+        imgBin.write(response.content)
